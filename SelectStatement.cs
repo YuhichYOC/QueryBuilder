@@ -20,30 +20,24 @@
 */
 using System.Collections.Generic;
 
-namespace QueryBuilder
-{
-    public class SelectStatement
-    {
+namespace QueryBuilder {
+    public class SelectStatement {
         private string table;
-        public void SetTable(string arg)
-        {
+        public void SetTable(string arg) {
             table = arg;
         }
 
         private string tableAlias;
-        public void SetTableAlias(string arg)
-        {
+        public void SetTableAlias(string arg) {
             tableAlias = arg;
         }
 
         private List<Column> columns;
-        private void SetColumns(List<Column> arg)
-        {
+        private void SetColumns(List<Column> arg) {
             columns = arg;
         }
 
-        public void AddColumn(string name, string tableAlias)
-        {
+        public void AddColumn(string name, string tableAlias) {
             Column add = new Column();
             add.SetName(name);
             add.SetTableAlias(tableAlias);
@@ -52,81 +46,66 @@ namespace QueryBuilder
         }
 
         private List<JoinKeyword> joins;
-        private void SetJoins(List<JoinKeyword> arg)
-        {
+        private void SetJoins(List<JoinKeyword> arg) {
             joins = arg;
         }
 
-        public void AddJoin(JoinKeyword arg)
-        {
+        public void AddJoin(JoinKeyword arg) {
             joins.Add(arg);
         }
 
         private WhereKeyword where;
-        public void SetWhere(WhereKeyword arg)
-        {
+        public void SetWhere(WhereKeyword arg) {
             where = arg;
         }
 
-        public SelectStatement()
-        {
+        public SelectStatement() {
             columns = new List<Column>();
             joins = new List<JoinKeyword>();
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             string ret = string.Empty;
 
             ret += @" SELECT " + "\r\n";
-            foreach (var item in columns)
-            {
+            foreach (var item in columns) {
                 ret += item.ToString() + "\r\n";
             }
             ret += @" FROM " + "\r\n";
             ret += @"        " + table + @" " + tableAlias + @" " + "\r\n";
-            foreach (var item in joins)
-            {
+            foreach (var item in joins) {
                 ret += item.ToString();
             }
-            if (where != null)
-            {
+            if (where != null) {
                 ret += where.ToString();
             }
 
             return ret;
         }
 
-        class Column
-        {
+        class Column {
             private string name;
-            public void SetName(string arg)
-            {
+            public void SetName(string arg) {
                 name = arg;
             }
 
             private string tableAlias;
-            public void SetTableAlias(string arg)
-            {
+            public void SetTableAlias(string arg) {
                 tableAlias = arg;
             }
 
             private int index;
-            public void SetIndex(int arg)
-            {
+            public void SetIndex(int arg) {
                 index = arg;
             }
 
-            public override string ToString()
-            {
+            public override string ToString() {
                 string ret = string.Empty;
 
-                if (index == 0)
-                {
+                if (index == 0) {
                     ret += @"        ";
                 }
-                else
-                {
+                else {
                     ret += @"      , ";
                 }
                 ret += tableAlias + @"." + name + @" ";
