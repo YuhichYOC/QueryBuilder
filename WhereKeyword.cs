@@ -20,21 +20,16 @@
 */
 using System.Collections.Generic;
 
-namespace QueryBuilder
-{
-    public class WhereKeyword
-    {
+namespace QueryBuilder {
+    public class WhereKeyword {
         private List<Condition> conditions;
-        private void SetConditions(List<Condition> arg)
-        {
+        private void SetConditions(List<Condition> arg) {
             conditions = arg;
         }
 
         public void AddCondition(bool equal, bool greaterThanEqual, bool rightSideAsLarger
-            , string alias, string name, string value)
-        {
-            if (conditions == null)
-            {
+            , string alias, string name, string value) {
+            if (conditions == null) {
                 conditions = new List<Condition>();
             }
             Condition add = new Condition();
@@ -46,19 +41,15 @@ namespace QueryBuilder
             conditions.Add(add);
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             string ret = string.Empty;
 
             ret += @" WHERE " + "\r\n";
-            for (int i = 0; i < conditions.Count; i++)
-            {
-                if (i == 0)
-                {
+            for (int i = 0; i < conditions.Count; i++) {
+                if (i == 0) {
                     ret += @"        " + conditions[i].ToString() + @" " + "\r\n";
                 }
-                else
-                {
+                else {
                     ret += @"    AND " + "\r\n";
                     ret += @"        " + conditions[i].ToString() + @" " + "\r\n";
                 }
@@ -67,104 +58,84 @@ namespace QueryBuilder
             return ret;
         }
 
-        class Condition
-        {
+        class Condition {
             private bool equal;
-            public void SetEqual(bool arg)
-            {
+            public void SetEqual(bool arg) {
                 equal = arg;
             }
 
             private bool greaterThanEqual;
-            public void SetGreaterThanEqual(bool arg)
-            {
+            public void SetGreaterThanEqual(bool arg) {
                 greaterThanEqual = arg;
             }
 
             private bool rightSideAsLarger;
-            public void SetRightSideAsLarger(bool arg)
-            {
+            public void SetRightSideAsLarger(bool arg) {
                 rightSideAsLarger = arg;
             }
 
             private Side leftSide;
-            private void SetLeftSide(Side arg)
-            {
+            private void SetLeftSide(Side arg) {
                 leftSide = arg;
             }
 
-            public void SetLeftSide(string alias, string name)
-            {
+            public void SetLeftSide(string alias, string name) {
                 leftSide = new Side();
                 leftSide.SetAlias(alias);
                 leftSide.SetName(name);
             }
 
             private string rightSide;
-            public void SetRightSide(string arg)
-            {
+            public void SetRightSide(string arg) {
                 rightSide = arg;
             }
 
-            public Condition()
-            {
+            public Condition() {
                 equal = true;
                 greaterThanEqual = false;
                 rightSideAsLarger = false;
             }
 
-            public override string ToString()
-            {
+            public override string ToString() {
                 return leftSide.ToString()
                     + EqualClause()
                     + rightSide;
             }
 
-            private string EqualClause()
-            {
-                if (equal)
-                {
+            private string EqualClause() {
+                if (equal) {
                     return @" = ";
                 }
-                else
-                {
+                else {
                     string ret = string.Empty;
-                    if (rightSideAsLarger)
-                    {
+                    if (rightSideAsLarger) {
                         ret += @" <";
                     }
-                    else
-                    {
+                    else {
                         ret += @" >";
                     }
-                    if (greaterThanEqual)
-                    {
+                    if (greaterThanEqual) {
                         ret += @"= ";
                     }
-                    else
-                    {
+                    else {
                         ret += @" ";
                     }
                     return ret;
                 }
             }
 
-            class Side
-            {
+            class Side {
                 private string alias;
-                public void SetAlias(string arg)
-                {
+                public void SetAlias(string arg) {
                     alias = arg;
                 }
 
                 private string name;
-                public void SetName(string arg)
-                {
+                public void SetName(string arg) {
                     name = arg;
                 }
 
-                public override string ToString()
-                {
+                public override string ToString() {
                     return alias + @"." + name;
                 }
             }
