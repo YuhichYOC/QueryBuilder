@@ -20,69 +20,56 @@
 */
 using System.Collections.Generic;
 
-namespace QueryBuilder
-{
-    public class JoinKeyword
-    {
+namespace QueryBuilder {
+    public class JoinKeyword {
         private string joinTable;
-        public void SetJoinTable(string arg)
-        {
+        public void SetJoinTable(string arg) {
             joinTable = arg;
         }
 
         private string joinTableAlias;
-        public void SetJoinTableAlias(string arg)
-        {
+        public void SetJoinTableAlias(string arg) {
             joinTableAlias = arg;
         }
 
         private string table;
-        public void SetTable(string arg)
-        {
+        public void SetTable(string arg) {
             table = arg;
         }
 
         private string tableAlias;
-        public void SetTableAlias(string arg)
-        {
+        public void SetTableAlias(string arg) {
             tableAlias = arg;
         }
 
         private bool innerJoin;
-        public void SetInnerJoin(bool arg)
-        {
+        public void SetInnerJoin(bool arg) {
             innerJoin = arg;
         }
 
         private bool leftOuterJoin;
-        public void SetLeftOuterJoin(bool arg)
-        {
+        public void SetLeftOuterJoin(bool arg) {
             leftOuterJoin = arg;
         }
 
         private bool rightOuterJoin;
-        public void SetRightOuterJoin(bool arg)
-        {
+        public void SetRightOuterJoin(bool arg) {
             rightOuterJoin = arg;
         }
 
         private bool crossJoin;
-        public void SetCrossJoin(bool arg)
-        {
+        public void SetCrossJoin(bool arg) {
             crossJoin = arg;
         }
 
         private List<Condition> conditions;
-        private void SetConditions(List<Condition> arg)
-        {
+        private void SetConditions(List<Condition> arg) {
             conditions = arg;
         }
 
         public void AddCondition(bool equal, bool greaterThanEqual, bool joinTableAsLarger
-            , string joinTableColumn, string tableColumn)
-        {
-            if (conditions == null)
-            {
+            , string joinTableColumn, string tableColumn) {
+            if (conditions == null) {
                 conditions = new List<Condition>();
             }
             Condition add = new Condition();
@@ -96,24 +83,19 @@ namespace QueryBuilder
             conditions.Add(add);
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             string ret = string.Empty;
 
             ret += JoinClause() + "\r\n";
-            if (crossJoin)
-            {
+            if (crossJoin) {
                 return ret;
             }
-            for (int i = 0; i < conditions.Count; i++)
-            {
-                if (i == 0)
-                {
+            for (int i = 0; i < conditions.Count; i++) {
+                if (i == 0) {
                     ret += @" ON " + "\r\n";
                     ret += @"        " + conditions[i].ToString() + @" " + "\r\n";
                 }
-                else
-                {
+                else {
                     ret += @"    AND " + "\r\n";
                     ret += @"        " + conditions[i].ToString() + @" " + "\r\n";
                 }
@@ -122,81 +104,66 @@ namespace QueryBuilder
             return ret;
         }
 
-        public string JoinClause()
-        {
-            if (innerJoin)
-            {
+        public string JoinClause() {
+            if (innerJoin) {
                 return @" INNER JOIN " + "\r\n" +
                        @"        " + joinTable + @" " + joinTableAlias + @" ";
             }
-            else if (leftOuterJoin)
-            {
+            else if (leftOuterJoin) {
                 return @" LEFT OUTER JOIN " + "\r\n" +
                        @"        " + joinTable + @" " + joinTableAlias + @" ";
             }
-            else if (rightOuterJoin)
-            {
+            else if (rightOuterJoin) {
                 return @" RIGHT OUTER JOIN " + "\r\n" +
                        @"        " + joinTable + @" " + joinTableAlias + @" ";
             }
-            else if (crossJoin)
-            {
+            else if (crossJoin) {
                 return @" CROSS JOIN " + "\r\n" +
                        @"        " + joinTable + @" " + joinTableAlias + @" ";
             }
-            else
-            {
+            else {
                 return @" JOIN " + "\r\n" +
                        @"        " + joinTable + @" " + joinTableAlias + @" ";
             }
         }
 
-        class Condition
-        {
+        class Condition {
             private string joinTableAlias;
-            public void SetJoinTableAlias(string arg)
-            {
+            public void SetJoinTableAlias(string arg) {
                 joinTableAlias = arg;
             }
 
             private string tableAlias;
-            public void SetTableAlias(string arg)
-            {
+            public void SetTableAlias(string arg) {
                 tableAlias = arg;
             }
 
             private bool equal;
-            public void SetEqual(bool arg)
-            {
+            public void SetEqual(bool arg) {
                 equal = arg;
             }
 
             private bool greaterThanEqual;
-            public void SetGreaterThanEqual(bool arg)
-            {
+            public void SetGreaterThanEqual(bool arg) {
                 greaterThanEqual = arg;
             }
 
             private bool joinTableAsLarger;
-            public void SetJoinTableAsLarger(bool arg)
-            {
+            public void SetJoinTableAsLarger(bool arg) {
                 joinTableAsLarger = arg;
             }
 
             private string joinTableColumn;
-            public void SetJoinTableColumn(string arg)
-            {
+            public void SetJoinTableColumn(string arg) {
                 joinTableColumn = arg;
             }
 
             private string tableColumn;
-            public void SetTableColumn(string arg)
-            {
+            public void SetTableColumn(string arg) {
                 tableColumn = arg;
             }
 
-            public Condition()
-            {
+            public Condition() {
                 joinTableAlias = string.Empty;
                 tableAlias = string.Empty;
                 equal = true;
@@ -206,36 +173,28 @@ namespace QueryBuilder
                 tableColumn = string.Empty;
             }
 
-            public override string ToString()
-            {
-                return tableAlias + @"." + tableColumn 
-                    + EqualClause() 
+            public override string ToString() {
+                return tableAlias + @"." + tableColumn
+                    + EqualClause()
                     + joinTableAlias + @"." + joinTableColumn;
             }
 
-            private string EqualClause()
-            {
-                if (equal)
-                {
+            private string EqualClause() {
+                if (equal) {
                     return @" = ";
                 }
-                else
-                {
+                else {
                     string ret = string.Empty;
-                    if (joinTableAsLarger)
-                    {
+                    if (joinTableAsLarger) {
                         ret = @" <";
                     }
-                    else
-                    {
+                    else {
                         ret = @" >";
                     }
-                    if (greaterThanEqual)
-                    {
+                    if (greaterThanEqual) {
                         ret += @"= ";
                     }
-                    else
-                    {
+                    else {
                         ret += @" ";
                     }
                     return ret;
